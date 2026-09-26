@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   analyze-and-test:
@@ -12,7 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
+      - name: Installer Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: 3.38.5
@@ -24,5 +25,11 @@ jobs:
       - name: Analyse statique
         run: flutter analyze
 
-      - name: Tests unitaires
-        run: flutter test
+      - name: Tests avec couverture
+        run: flutter test --coverage
+
+      - name: Publier le rapport de couverture
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/lcov.info
