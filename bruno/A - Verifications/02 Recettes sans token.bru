@@ -1,0 +1,28 @@
+meta {
+  name: A2 - Recettes SANS token (attendu : [])
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/rest/v1/recipes?select=name&limit=3
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("Liste vide : la RLS bloque les non-connectés", function() {
+    expect(res.getBody()).to.eql([]);
+  });
+}
+
+docs {
+  Uniquement l'en-tête apikey. Résultat attendu : [] (liste vide), PAS une erreur.
+}

@@ -1,0 +1,26 @@
+meta {
+  name: B9 - Token invalide (attendu : 401)
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/rest/v1/recipes?select=name&limit=1
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Authorization: Bearer token-invalide
+}
+
+tests {
+  test("Statut 401", function() {
+    expect(res.getStatus()).to.equal(401);
+  });
+}
+
+docs {
+  L'erreur que ton intercepteur interceptera pour déclencher le refresh.
+}

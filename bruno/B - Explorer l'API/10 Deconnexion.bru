@@ -1,0 +1,27 @@
+meta {
+  name: B10 - Déconnexion
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/auth/v1/logout
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Authorization: Bearer {{accessToken}}
+}
+
+tests {
+  test("Statut 204", function() {
+    expect(res.getStatus()).to.equal(204);
+  });
+}
+
+docs {
+  Révoque tous les refresh tokens de l'utilisateur côté serveur.
+  Attention : l'access_token reste valide jusqu'à son expiration (JWT sans état). L'app doit donc AUSSI effacer les tokens localement.
+}

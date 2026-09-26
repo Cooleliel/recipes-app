@@ -1,0 +1,42 @@
+meta {
+  name: B1 - Inscription (nouvel utilisateur)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/v1/signup
+  body: json
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "{{signupEmail}}",
+    "password": "{{password}}"
+  }
+}
+
+script:pre-request {
+  // Email unique à chaque exécution
+  bru.setVar("signupEmail", "test+" + Date.now() + "@exemple.com");
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("Session reçue directement (Confirm email désactivé)", function() {
+    expect(res.getBody().access_token, "Pas de token : Confirm email est encore activé").to.be.a("string");
+  });
+}
+
+docs {
+  Crée un utilisateur avec un email unique. Si Confirm email est désactivé, la réponse contient directement une session.
+  On n'écrase PAS les tokens de l'utilisateur de test.
+}

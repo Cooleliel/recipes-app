@@ -1,0 +1,32 @@
+meta {
+  name: B11 - Refresh après déconnexion (attendu : erreur)
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/auth/v1/token?grant_type=refresh_token
+  body: json
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "refresh_token": "{{refreshToken}}"
+  }
+}
+
+tests {
+  test("Refusé (session révoquée)", function() {
+    expect(res.getStatus()).to.be.at.least(400);
+  });
+}
+
+docs {
+  Preuve que la déconnexion est effective côté serveur. Relance ensuite A1 pour récupérer des tokens valides.
+}

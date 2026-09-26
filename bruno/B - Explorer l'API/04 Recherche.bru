@@ -1,0 +1,29 @@
+meta {
+  name: B4 - Recherche par nom (pizza)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/rest/v1/recipes?select=id,name&name=ilike.*pizza*
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Authorization: Bearer {{accessToken}}
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("Tous les résultats contiennent « pizza »", function() {
+    res.getBody().forEach(r => expect(r.name.toLowerCase()).to.include("pizza"));
+  });
+}
+
+docs {
+  Barre de recherche. ilike = insensible à la casse ; dans l'URL, les * remplacent les % du SQL.
+}

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Recipes App - Supabase REST",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

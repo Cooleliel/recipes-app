@@ -1,0 +1,34 @@
+meta {
+  name: B3 - Liste paginée (page 1, 10 recettes)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/rest/v1/recipes?select=id,name,image,rating,difficulty,cook_time_minutes&order=id.asc&limit=10&offset=0
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Authorization: Bearer {{accessToken}}
+  Prefer: count=exact
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("10 recettes", function() {
+    expect(res.getBody()).to.have.lengthOf(10);
+  });
+  test("Content-Range donne le total (…/50)", function() {
+    expect(res.getHeader("content-range")).to.match(/\/50$/);
+  });
+}
+
+docs {
+  Écran Liste (scroll infini). Page suivante : offset=10, puis 20…
+  Prefer: count=exact fait renvoyer le total dans l'en-tête Content-Range (ex. 0-9/50) : ça permet de savoir s'il reste des pages.
+}

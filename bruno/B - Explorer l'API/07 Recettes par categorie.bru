@@ -1,0 +1,29 @@
+meta {
+  name: B7 - Recettes d'une catégorie (Italian)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/rest/v1/recipes?select=id,name,tags&tags=cs.{Italian}
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Authorization: Bearer {{accessToken}}
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("Toutes les recettes ont le tag Italian", function() {
+    res.getBody().forEach(r => expect(r.tags).to.include("Italian"));
+  });
+}
+
+docs {
+  cs = « contient ». Pour un tag avec espace, mets-le entre guillemets : tags=cs.{"Main course"}.
+}

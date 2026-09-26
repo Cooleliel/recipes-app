@@ -1,0 +1,30 @@
+meta {
+  name: B6 - Catégories (vue recipe_tags)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/rest/v1/recipe_tags?select=tag
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Authorization: Bearer {{accessToken}}
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("Liste de catégories non vide", function() {
+    expect(res.getBody().length).to.be.above(0);
+    expect(res.getBody()[0]).to.have.property("tag");
+  });
+}
+
+docs {
+  Écran Catégories.
+}

@@ -1,0 +1,6 @@
+# Copie ce fichier en .env (même dossier) et remplis les valeurs.
+# .env est ignoré par Git : tes identifiants ne partent jamais sur GitHub.
+SUPABASE_URL=https://VOTRE-REF.supabase.co
+SUPABASE_KEY=sb_publishable_xxxxxxxxxxxxxxxx
+TEST_EMAIL=test@exemple.com
+TEST_PASSWORD=motdepasse

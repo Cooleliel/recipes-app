@@ -1,0 +1,31 @@
+meta {
+  name: B5 - Détail d'une recette (id = 1)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/rest/v1/recipes?id=eq.1&select=*
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Authorization: Bearer {{accessToken}}
+  Accept: application/vnd.pgrst.object+json
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("Un objet (pas une liste) avec id 1", function() {
+    expect(res.getBody().id).to.equal(1);
+  });
+}
+
+docs {
+  Écran Détail. L'en-tête Accept: application/vnd.pgrst.object+json fait renvoyer UN objet au lieu d'une liste.
+  Si l'id n'existe pas : erreur 406, à afficher comme « recette introuvable ».
+}

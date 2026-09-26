@@ -1,0 +1,52 @@
+meta {
+  name: B8 - Refresh du token
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/auth/v1/token?grant_type=refresh_token
+  body: json
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "refresh_token": "{{refreshToken}}"
+  }
+}
+
+script:pre-request {
+  bru.setVar("oldRefreshToken", bru.getVar("refreshToken"));
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body && body.access_token) {
+    bru.setVar("accessToken", body.access_token);
+    bru.setVar("refreshToken", body.refresh_token);
+  }
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("access_token et refresh_token reçus", function() {
+    expect(res.getBody().access_token).to.be.a("string");
+    expect(res.getBody().refresh_token).to.be.a("string");
+  });
+  test("Nouveau refresh_token (usage unique : toujours stocker le nouveau)", function() {
+    expect(res.getBody().refresh_token).to.not.equal(bru.getVar("oldRefreshToken"));
+  });
+}
+
+docs {
+  Ce que ton intercepteur fera sur une 401. Clé du body : refresh_token (snake_case).
+  Le refresh_token change à chaque appel : il faut TOUJOURS stocker le nouveau.
+}

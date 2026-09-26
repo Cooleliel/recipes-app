@@ -1,0 +1,25 @@
+meta {
+  name: A3 - Recettes AVEC token (attendu : 3)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/rest/v1/recipes?select=name&limit=3
+  body: none
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Authorization: Bearer {{accessToken}}
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("3 recettes reçues", function() {
+    expect(res.getBody()).to.have.lengthOf(3);
+  });
+}

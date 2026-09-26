@@ -1,0 +1,49 @@
+meta {
+  name: A1 - Connexion (email + mot de passe)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/v1/token?grant_type=password
+  body: json
+  auth: none
+}
+
+headers {
+  apikey: {{supabaseKey}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "{{email}}",
+    "password": "{{password}}"
+  }
+}
+
+script:post-response {
+  const body = res.getBody();
+  if (body && body.access_token) {
+    bru.setVar("accessToken", body.access_token);
+    bru.setVar("refreshToken", body.refresh_token);
+  }
+}
+
+tests {
+  test("Statut 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("access_token et refresh_token reçus", function() {
+    expect(res.getBody().access_token).to.be.a("string");
+    expect(res.getBody().refresh_token).to.be.a("string");
+  });
+  test("Le token expire dans 3600 s", function() {
+    expect(res.getBody().expires_in).to.equal(3600);
+  });
+}
+
+docs {
+  Renvoie un access_token (JWT, valable 1 h) et un refresh_token.
+  Les deux sont enregistrés automatiquement (accessToken, refreshToken) pour les requêtes suivantes.
+}
