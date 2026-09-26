@@ -34,8 +34,8 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     if (!await _networkInfo.isConnected) {
-      return Left<Failure, User>(
-        const NetworkFailure('Connexion internet requise pour se connecter.'),
+      return const Left<Failure, User>(
+        NetworkFailure('Connexion internet requise pour se connecter.'),
       );
     }
     try {
@@ -55,8 +55,8 @@ class AuthRepositoryImpl implements AuthRepository {
     String? displayName,
   }) async {
     if (!await _networkInfo.isConnected) {
-      return Left<Failure, User>(
-        const NetworkFailure('Connexion internet requise pour créer un compte.'),
+      return const Left<Failure, User>(
+        NetworkFailure('Connexion internet requise pour créer un compte.'),
       );
     }
     try {
@@ -66,8 +66,8 @@ class AuthRepositoryImpl implements AuthRepository {
         displayName: displayName,
       );
       if (session == null) {
-        return Left<Failure, User>(
-          const ServerFailure(
+        return const Left<Failure, User>(
+          ServerFailure(
             'Compte créé : confirme ton email, puis connecte-toi.',
           ),
         );
@@ -90,7 +90,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await _tokenStorage.clear();
       await _local.clear();
     }
-    return Right<Failure, Unit>(unit);
+    return const Right<Failure, Unit>(unit);
   }
 
   @override
