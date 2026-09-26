@@ -10,6 +10,7 @@ dependencies:
   dio: ^5.11.1
   flutter:
     sdk: flutter
+  flutter_secure_storage: ^11.2.0
   fpdart: ^1.2.0
 
 dev_dependencies:
