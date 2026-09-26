@@ -1,1 +1,19 @@
+# Règles d'analyse statique du projet.
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    # Interdit les génériques "bruts" (List au lieu de List<String>…).
+    strict-raw-types: true
+    # Signale toute inférence qui retomberait silencieusement sur `dynamic`.
+    strict-inference: true
+
+linter:
+  rules:
+    always_declare_return_types: true
+    avoid_print: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    prefer_single_quotes: true
