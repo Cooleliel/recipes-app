@@ -1,7 +1,7 @@
 name: recipes_app
-description: "A new Flutter project."
+description: "Application de recettes connectée à Supabase : authentification JWT, cache hors ligne et mode déconnecté."
 publish_to: 'none'
-version: 0.1.0
+version: 1.0.0+1
 
 environment:
   sdk: ^3.10.4
