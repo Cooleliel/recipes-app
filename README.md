@@ -1,5 +1,7 @@
 # Recipes App
 
+[![CI](https://github.com/Cooleliel/recipes-app/actions/workflows/ci.yml/badge.svg)](https://github.com/Cooleliel/recipes-app/actions/workflows/ci.yml)
+
 Application Flutter de recettes de cuisine connectée à un **backend réel (Supabase)** :
 authentification JWT, données REST, cache local et mode hors ligne.
 
@@ -148,8 +150,8 @@ de toute recette déjà vue et **rechercher** parmi elles.
 ### 2. Configurer l'application
 
 ```bash
-git clone https://github.com/TON_PSEUDO/recipes_app.git
-cd recipes_app
+git clone https://github.com/Cooleliel/recipes-app.git
+cd recipes-app
 flutter pub get
 cp config/env.example.json config/env.json
 ```
@@ -169,7 +171,7 @@ Remplis `config/env.json` (ce fichier est ignoré par Git) :
 flutter run --dart-define-from-file=config/env.json
 ```
 
-Dans VS Code, la configuration **recipes_app** de `.vscode/launch.json` passe déjà ce fichier (touche F5).
+Dans VS Code, la configuration **recipes-app** de `.vscode/launch.json` passe déjà ce fichier (touche F5).
 Sans configuration, l'app affiche un écran expliquant la commande à utiliser.
 
 ---
