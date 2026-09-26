@@ -10,11 +10,11 @@ class RecipePageModel {
     return RecipePageModel(
       recipes: items is List<dynamic>
           ? items
-              .map(
-                (dynamic item) =>
-                    RecipeModel.fromJson(item as Map<String, dynamic>),
-              )
-              .toList()
+                .map(
+                  (dynamic item) =>
+                      RecipeModel.fromJson(item as Map<String, dynamic>),
+                )
+                .toList()
           : <RecipeModel>[],
       total: (json['total'] as num?)?.toInt() ?? unknownTotal,
     );
@@ -33,7 +33,7 @@ class RecipePageModel {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'recipes': recipes.map((RecipeModel recipe) => recipe.toJson()).toList(),
-        'total': total,
-      };
+    'recipes': recipes.map((RecipeModel recipe) => recipe.toJson()).toList(),
+    'total': total,
+  };
 }

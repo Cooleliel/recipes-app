@@ -39,9 +39,13 @@ class _PasswordFieldState extends State<PasswordField> {
         labelText: widget.label,
         prefixIcon: const Icon(Icons.lock_outline),
         suffixIcon: IconButton(
-          tooltip: _obscured ? 'Afficher le mot de passe' : 'Masquer le mot de passe',
+          tooltip: _obscured
+              ? 'Afficher le mot de passe'
+              : 'Masquer le mot de passe',
           icon: Icon(
-            _obscured ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+            _obscured
+                ? Icons.visibility_outlined
+                : Icons.visibility_off_outlined,
           ),
           onPressed: () => setState(() => _obscured = !_obscured),
         ),

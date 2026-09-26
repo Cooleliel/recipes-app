@@ -18,15 +18,16 @@ abstract final class DioErrorMapper {
       DioExceptionType.sendTimeout ||
       DioExceptionType.receiveTimeout ||
       DioExceptionType.transformTimeout ||
-      DioExceptionType.connectionError =>
-        const NetworkException(),
+      DioExceptionType.connectionError => const NetworkException(),
       DioExceptionType.badResponse => _fromResponse(error.response),
       DioExceptionType.cancel => const ServerException('Requête annulée.'),
-      DioExceptionType.badCertificate =>
-        const ServerException('Certificat du serveur invalide.'),
-      DioExceptionType.unknown => error.response == null
-          ? const NetworkException()
-          : _fromResponse(error.response),
+      DioExceptionType.badCertificate => const ServerException(
+        'Certificat du serveur invalide.',
+      ),
+      DioExceptionType.unknown =>
+        error.response == null
+            ? const NetworkException()
+            : _fromResponse(error.response),
     };
   }
 
@@ -57,7 +58,9 @@ abstract final class DioErrorMapper {
   static Exception _fromResponse(Response<dynamic>? response) {
     if (isAuthError(response)) return const UnauthorizedException();
     final int statusCode = response?.statusCode ?? 0;
-    if (statusCode == 404 || statusCode == 406) return const NotFoundException();
+    if (statusCode == 404 || statusCode == 406) {
+      return const NotFoundException();
+    }
     final Object? data = response?.data;
     return ServerException(
       _messageFor(statusCode, errorCode(data), data),
@@ -103,7 +106,11 @@ abstract final class DioErrorMapper {
 
   static String? _serverMessage(Object? data) {
     if (data is Map<String, dynamic>) {
-      for (final String key in <String>['msg', 'message', 'error_description']) {
+      for (final String key in <String>[
+        'msg',
+        'message',
+        'error_description',
+      ]) {
         final Object? value = data[key];
         if (value is String && value.isNotEmpty) return value;
       }

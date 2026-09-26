@@ -57,7 +57,8 @@ class RecipeCard extends StatelessWidget {
                         _InfoLabel(
                           icon: Icons.timer_outlined,
                           label: '${recipe.totalTimeMinutes} min',
-                          semanticLabel: 'Durée ${recipe.totalTimeMinutes} minutes',
+                          semanticLabel:
+                              'Durée ${recipe.totalTimeMinutes} minutes',
                         ),
                         _InfoLabel(
                           icon: Icons.signal_cellular_alt,

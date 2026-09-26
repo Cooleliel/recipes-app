@@ -28,21 +28,21 @@ class UserModel extends User {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'email': email,
-        'user_metadata': <String, dynamic>{'display_name': displayName},
-        'created_at': createdAt?.toIso8601String(),
-        'last_sign_in_at': lastSignInAt?.toIso8601String(),
-      };
+    'id': id,
+    'email': email,
+    'user_metadata': <String, dynamic>{'display_name': displayName},
+    'created_at': createdAt?.toIso8601String(),
+    'last_sign_in_at': lastSignInAt?.toIso8601String(),
+  };
 
   /// La couche Data renvoie toujours une entité, jamais un modèle.
   User toEntity() => User(
-        id: id,
-        email: email,
-        displayName: displayName,
-        createdAt: createdAt,
-        lastSignInAt: lastSignInAt,
-      );
+    id: id,
+    email: email,
+    displayName: displayName,
+    createdAt: createdAt,
+    lastSignInAt: lastSignInAt,
+  );
 
   static DateTime? _parseDate(Object? value) =>
       value is String ? DateTime.tryParse(value) : null;

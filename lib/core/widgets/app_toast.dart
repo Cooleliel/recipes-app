@@ -100,23 +100,26 @@ class _ToastState extends State<_Toast> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colors = Theme.of(context).colorScheme;
-    final (Color background, Color foreground, IconData icon) =
-        switch (widget.type) {
+    final (
+      Color background,
+      Color foreground,
+      IconData icon,
+    ) = switch (widget.type) {
       ToastType.info => (
-          colors.inverseSurface,
-          colors.onInverseSurface,
-          Icons.info_outline,
-        ),
+        colors.inverseSurface,
+        colors.onInverseSurface,
+        Icons.info_outline,
+      ),
       ToastType.success => (
-          colors.primaryContainer,
-          colors.onPrimaryContainer,
-          Icons.check_circle_outline,
-        ),
+        colors.primaryContainer,
+        colors.onPrimaryContainer,
+        Icons.check_circle_outline,
+      ),
       ToastType.error => (
-          colors.errorContainer,
-          colors.onErrorContainer,
-          Icons.error_outline,
-        ),
+        colors.errorContainer,
+        colors.onErrorContainer,
+        Icons.error_outline,
+      ),
     };
 
     return Positioned(

@@ -44,41 +44,41 @@ class RecipeModel extends Recipe {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'name': name,
-        'ingredients': ingredients,
-        'instructions': instructions,
-        'prep_time_minutes': prepTimeMinutes,
-        'cook_time_minutes': cookTimeMinutes,
-        'servings': servings,
-        'difficulty': difficulty,
-        'cuisine': cuisine,
-        'calories_per_serving': caloriesPerServing,
-        'tags': tags,
-        'meal_type': mealTypes,
-        'image': imageUrl,
-        'rating': rating,
-        'review_count': reviewCount,
-      };
+    'id': id,
+    'name': name,
+    'ingredients': ingredients,
+    'instructions': instructions,
+    'prep_time_minutes': prepTimeMinutes,
+    'cook_time_minutes': cookTimeMinutes,
+    'servings': servings,
+    'difficulty': difficulty,
+    'cuisine': cuisine,
+    'calories_per_serving': caloriesPerServing,
+    'tags': tags,
+    'meal_type': mealTypes,
+    'image': imageUrl,
+    'rating': rating,
+    'review_count': reviewCount,
+  };
 
   /// La couche Data renvoie toujours une entité, jamais un modèle.
   Recipe toEntity() => Recipe(
-        id: id,
-        name: name,
-        ingredients: ingredients,
-        instructions: instructions,
-        prepTimeMinutes: prepTimeMinutes,
-        cookTimeMinutes: cookTimeMinutes,
-        servings: servings,
-        difficulty: difficulty,
-        cuisine: cuisine,
-        caloriesPerServing: caloriesPerServing,
-        tags: tags,
-        mealTypes: mealTypes,
-        imageUrl: imageUrl,
-        rating: rating,
-        reviewCount: reviewCount,
-      );
+    id: id,
+    name: name,
+    ingredients: ingredients,
+    instructions: instructions,
+    prepTimeMinutes: prepTimeMinutes,
+    cookTimeMinutes: cookTimeMinutes,
+    servings: servings,
+    difficulty: difficulty,
+    cuisine: cuisine,
+    caloriesPerServing: caloriesPerServing,
+    tags: tags,
+    mealTypes: mealTypes,
+    imageUrl: imageUrl,
+    rating: rating,
+    reviewCount: reviewCount,
+  );
 
   static int _int(Object? value) => value is num ? value.toInt() : 0;
 

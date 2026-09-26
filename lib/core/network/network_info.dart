@@ -26,6 +26,7 @@ class NetworkInfoImpl implements NetworkInfo {
     yield* _connectivity.onConnectivityChanged.map(_hasConnection);
   }
 
-  static bool _hasConnection(List<ConnectivityResult> results) => results
-      .any((ConnectivityResult result) => result != ConnectivityResult.none);
+  static bool _hasConnection(List<ConnectivityResult> results) => results.any(
+    (ConnectivityResult result) => result != ConnectivityResult.none,
+  );
 }

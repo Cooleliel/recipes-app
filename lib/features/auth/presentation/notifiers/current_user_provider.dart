@@ -9,16 +9,17 @@ import 'package:recipes_app/features/auth/presentation/notifiers/auth_notifier.d
 ///
 /// Il se recharge à chaque changement de session, pour ne jamais afficher
 /// le profil d'un compte précédent.
-final FutureProvider<User> currentUserProvider = FutureProvider<User>(
-  (Ref ref) async {
-    final AuthState authState = ref.watch(authNotifierProvider);
-    if (authState is! Authenticated) throw const AuthFailure('Non connecté.');
+final FutureProvider<User> currentUserProvider = FutureProvider<User>((
+  Ref ref,
+) async {
+  final AuthState authState = ref.watch(authNotifierProvider);
+  if (authState is! Authenticated) throw const AuthFailure('Non connecté.');
 
-    final Either<Failure, User> result =
-        await ref.watch(getCurrentUserUseCaseProvider).call();
-    return result.fold<User>(
-      (Failure failure) => throw failure,
-      (User user) => user,
-    );
-  },
-);
+  final Either<Failure, User> result = await ref
+      .watch(getCurrentUserUseCaseProvider)
+      .call();
+  return result.fold<User>(
+    (Failure failure) => throw failure,
+    (User user) => user,
+  );
+});

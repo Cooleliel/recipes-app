@@ -40,13 +40,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
-      final Response<Map<String, dynamic>> response =
-          await _dio.post<Map<String, dynamic>>(
-        ApiConstants.token,
-        queryParameters: <String, String>{'grant_type': 'password'},
-        data: <String, String>{'email': email, 'password': password},
-        options: _publicOptions,
-      );
+      final Response<Map<String, dynamic>> response = await _dio
+          .post<Map<String, dynamic>>(
+            ApiConstants.token,
+            queryParameters: <String, String>{'grant_type': 'password'},
+            data: <String, String>{'email': email, 'password': password},
+            options: _publicOptions,
+          );
       return AuthSessionModel.fromJson(_requireBody(response));
     } on DioException catch (error) {
       throw DioErrorMapper.map(error);
@@ -60,17 +60,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     String? displayName,
   }) async {
     try {
-      final Response<Map<String, dynamic>> response =
-          await _dio.post<Map<String, dynamic>>(
-        ApiConstants.signup,
-        data: <String, dynamic>{
-          'email': email,
-          'password': password,
-          if (displayName != null)
-            'data': <String, String>{'display_name': displayName},
-        },
-        options: _publicOptions,
-      );
+      final Response<Map<String, dynamic>> response = await _dio
+          .post<Map<String, dynamic>>(
+            ApiConstants.signup,
+            data: <String, dynamic>{
+              'email': email,
+              'password': password,
+              if (displayName != null)
+                'data': <String, String>{'display_name': displayName},
+            },
+            options: _publicOptions,
+          );
       final Map<String, dynamic> body = _requireBody(response);
       if (body['access_token'] is! String) return null;
       return AuthSessionModel.fromJson(body);
@@ -82,8 +82,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> getCurrentUser() async {
     try {
-      final Response<Map<String, dynamic>> response =
-          await _dio.get<Map<String, dynamic>>(ApiConstants.user);
+      final Response<Map<String, dynamic>> response = await _dio
+          .get<Map<String, dynamic>>(ApiConstants.user);
       return UserModel.fromJson(_requireBody(response));
     } on DioException catch (error) {
       throw DioErrorMapper.map(error);

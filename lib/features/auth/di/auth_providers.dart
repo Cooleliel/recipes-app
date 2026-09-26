@@ -18,23 +18,23 @@ import 'package:recipes_app/features/auth/domain/usecases/restore_session_use_ca
 
 final Provider<AuthRemoteDataSource> authRemoteDataSourceProvider =
     Provider<AuthRemoteDataSource>(
-  (Ref ref) => AuthRemoteDataSourceImpl(ref.watch(dioProvider)),
-);
+      (Ref ref) => AuthRemoteDataSourceImpl(ref.watch(dioProvider)),
+    );
 
 final Provider<AuthLocalDataSource> authLocalDataSourceProvider =
     Provider<AuthLocalDataSource>(
-  (Ref ref) => AuthLocalDataSourceImpl(Hive.box<String>(HiveBoxes.auth)),
-);
+      (Ref ref) => AuthLocalDataSourceImpl(Hive.box<String>(HiveBoxes.auth)),
+    );
 
 final Provider<AuthRepository> authRepositoryProvider =
     Provider<AuthRepository>(
-  (Ref ref) => AuthRepositoryImpl(
-    remote: ref.watch(authRemoteDataSourceProvider),
-    local: ref.watch(authLocalDataSourceProvider),
-    tokenStorage: ref.watch(tokenStorageProvider),
-    networkInfo: ref.watch(networkInfoProvider),
-  ),
-);
+      (Ref ref) => AuthRepositoryImpl(
+        remote: ref.watch(authRemoteDataSourceProvider),
+        local: ref.watch(authLocalDataSourceProvider),
+        tokenStorage: ref.watch(tokenStorageProvider),
+        networkInfo: ref.watch(networkInfoProvider),
+      ),
+    );
 
 final Provider<LoginUseCase> loginUseCaseProvider = Provider<LoginUseCase>(
   (Ref ref) => LoginUseCase(ref.watch(authRepositoryProvider)),
@@ -42,8 +42,8 @@ final Provider<LoginUseCase> loginUseCaseProvider = Provider<LoginUseCase>(
 
 final Provider<RegisterUseCase> registerUseCaseProvider =
     Provider<RegisterUseCase>(
-  (Ref ref) => RegisterUseCase(ref.watch(authRepositoryProvider)),
-);
+      (Ref ref) => RegisterUseCase(ref.watch(authRepositoryProvider)),
+    );
 
 final Provider<LogoutUseCase> logoutUseCaseProvider = Provider<LogoutUseCase>(
   (Ref ref) => LogoutUseCase(ref.watch(authRepositoryProvider)),
@@ -51,10 +51,10 @@ final Provider<LogoutUseCase> logoutUseCaseProvider = Provider<LogoutUseCase>(
 
 final Provider<GetCurrentUserUseCase> getCurrentUserUseCaseProvider =
     Provider<GetCurrentUserUseCase>(
-  (Ref ref) => GetCurrentUserUseCase(ref.watch(authRepositoryProvider)),
-);
+      (Ref ref) => GetCurrentUserUseCase(ref.watch(authRepositoryProvider)),
+    );
 
 final Provider<RestoreSessionUseCase> restoreSessionUseCaseProvider =
     Provider<RestoreSessionUseCase>(
-  (Ref ref) => RestoreSessionUseCase(ref.watch(authRepositoryProvider)),
-);
+      (Ref ref) => RestoreSessionUseCase(ref.watch(authRepositoryProvider)),
+    );

@@ -60,8 +60,9 @@ class RecipesState {
       isFromCache: isFromCache ?? this.isFromCache,
       query: query ?? this.query,
       failure: clearFailure ? null : failure ?? this.failure,
-      loadMoreFailure:
-          clearLoadMoreFailure ? null : loadMoreFailure ?? this.loadMoreFailure,
+      loadMoreFailure: clearLoadMoreFailure
+          ? null
+          : loadMoreFailure ?? this.loadMoreFailure,
     );
   }
 }
@@ -164,8 +165,9 @@ class RecipesNotifier extends Notifier<RecipesState> {
       clearFailure: true,
       clearLoadMoreFailure: true,
     );
-    final Either<Failure, RecipePage> result =
-        await ref.read(searchRecipesUseCaseProvider).call(query);
+    final Either<Failure, RecipePage> result = await ref
+        .read(searchRecipesUseCaseProvider)
+        .call(query);
     if (requestId != _requestId) return;
 
     result.fold<void>(

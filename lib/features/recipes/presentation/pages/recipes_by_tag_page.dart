@@ -18,7 +18,9 @@ class RecipesByTagPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<RecipePage> pageAsync = ref.watch(recipesByTagProvider(tag));
+    final AsyncValue<RecipePage> pageAsync = ref.watch(
+      recipesByTagProvider(tag),
+    );
     return Scaffold(
       appBar: AppBar(title: Text(tag)),
       body: pageAsync.when(

@@ -17,8 +17,9 @@ class RecipeDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<Recipe> recipeAsync =
-        ref.watch(recipeDetailProvider(recipeId));
+    final AsyncValue<Recipe> recipeAsync = ref.watch(
+      recipeDetailProvider(recipeId),
+    );
     return recipeAsync.when(
       data: (Recipe recipe) => Scaffold(
         body: _RecipeDetailContent(recipe: recipe),
@@ -69,22 +70,20 @@ class _RecipeDetailContent extends StatelessWidget {
         SliverPadding(
           padding: const EdgeInsets.all(16),
           sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              <Widget>[
-                _InfoChips(recipe: recipe),
-                const SizedBox(height: 16),
-                _TagChips(tags: recipe.tags),
-                const SizedBox(height: 24),
-                const _SectionTitle(title: 'Ingrédients'),
-                for (final String ingredient in recipe.ingredients)
-                  _IngredientTile(ingredient: ingredient),
-                const SizedBox(height: 24),
-                const _SectionTitle(title: 'Préparation'),
-                for (int i = 0; i < recipe.instructions.length; i++)
-                  _StepTile(number: i + 1, instruction: recipe.instructions[i]),
-                const SizedBox(height: 24),
-              ],
-            ),
+            delegate: SliverChildListDelegate(<Widget>[
+              _InfoChips(recipe: recipe),
+              const SizedBox(height: 16),
+              _TagChips(tags: recipe.tags),
+              const SizedBox(height: 24),
+              const _SectionTitle(title: 'Ingrédients'),
+              for (final String ingredient in recipe.ingredients)
+                _IngredientTile(ingredient: ingredient),
+              const SizedBox(height: 24),
+              const _SectionTitle(title: 'Préparation'),
+              for (int i = 0; i < recipe.instructions.length; i++)
+                _StepTile(number: i + 1, instruction: recipe.instructions[i]),
+              const SizedBox(height: 24),
+            ]),
           ),
         ),
       ],
@@ -105,7 +104,9 @@ class _InfoChips extends StatelessWidget {
       children: <Widget>[
         Chip(
           avatar: const Icon(Icons.star_rounded, size: 18),
-          label: Text('${recipe.rating.toStringAsFixed(1)} (${recipe.reviewCount} avis)'),
+          label: Text(
+            '${recipe.rating.toStringAsFixed(1)} (${recipe.reviewCount} avis)',
+          ),
         ),
         Chip(
           avatar: const Icon(Icons.timer_outlined, size: 18),

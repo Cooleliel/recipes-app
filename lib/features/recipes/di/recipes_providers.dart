@@ -16,44 +16,45 @@ import 'package:recipes_app/features/recipes/domain/usecases/search_recipes_use_
 
 final Provider<RecipeRemoteDataSource> recipeRemoteDataSourceProvider =
     Provider<RecipeRemoteDataSource>(
-  (Ref ref) => RecipeRemoteDataSourceImpl(ref.watch(dioProvider)),
-);
+      (Ref ref) => RecipeRemoteDataSourceImpl(ref.watch(dioProvider)),
+    );
 
 final Provider<RecipeLocalDataSource> recipeLocalDataSourceProvider =
     Provider<RecipeLocalDataSource>(
-  (Ref ref) => RecipeLocalDataSourceImpl(Hive.box<String>(HiveBoxes.recipes)),
-);
+      (Ref ref) =>
+          RecipeLocalDataSourceImpl(Hive.box<String>(HiveBoxes.recipes)),
+    );
 
 final Provider<RecipeRepository> recipeRepositoryProvider =
     Provider<RecipeRepository>(
-  (Ref ref) => RecipeRepositoryImpl(
-    remote: ref.watch(recipeRemoteDataSourceProvider),
-    local: ref.watch(recipeLocalDataSourceProvider),
-    networkInfo: ref.watch(networkInfoProvider),
-  ),
-);
+      (Ref ref) => RecipeRepositoryImpl(
+        remote: ref.watch(recipeRemoteDataSourceProvider),
+        local: ref.watch(recipeLocalDataSourceProvider),
+        networkInfo: ref.watch(networkInfoProvider),
+      ),
+    );
 
 final Provider<GetRecipesUseCase> getRecipesUseCaseProvider =
     Provider<GetRecipesUseCase>(
-  (Ref ref) => GetRecipesUseCase(ref.watch(recipeRepositoryProvider)),
-);
+      (Ref ref) => GetRecipesUseCase(ref.watch(recipeRepositoryProvider)),
+    );
 
 final Provider<SearchRecipesUseCase> searchRecipesUseCaseProvider =
     Provider<SearchRecipesUseCase>(
-  (Ref ref) => SearchRecipesUseCase(ref.watch(recipeRepositoryProvider)),
-);
+      (Ref ref) => SearchRecipesUseCase(ref.watch(recipeRepositoryProvider)),
+    );
 
 final Provider<GetRecipeDetailUseCase> getRecipeDetailUseCaseProvider =
     Provider<GetRecipeDetailUseCase>(
-  (Ref ref) => GetRecipeDetailUseCase(ref.watch(recipeRepositoryProvider)),
-);
+      (Ref ref) => GetRecipeDetailUseCase(ref.watch(recipeRepositoryProvider)),
+    );
 
 final Provider<GetTagsUseCase> getTagsUseCaseProvider =
     Provider<GetTagsUseCase>(
-  (Ref ref) => GetTagsUseCase(ref.watch(recipeRepositoryProvider)),
-);
+      (Ref ref) => GetTagsUseCase(ref.watch(recipeRepositoryProvider)),
+    );
 
 final Provider<GetRecipesByTagUseCase> getRecipesByTagUseCaseProvider =
     Provider<GetRecipesByTagUseCase>(
-  (Ref ref) => GetRecipesByTagUseCase(ref.watch(recipeRepositoryProvider)),
-);
+      (Ref ref) => GetRecipesByTagUseCase(ref.watch(recipeRepositoryProvider)),
+    );

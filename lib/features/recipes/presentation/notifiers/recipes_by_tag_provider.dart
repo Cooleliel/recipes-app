@@ -7,13 +7,12 @@ import 'package:recipes_app/features/recipes/domain/entities/recipe_page.dart';
 
 /// Recettes d'une catégorie.
 final FutureProviderFamily<RecipePage, String> recipesByTagProvider =
-    FutureProvider.family<RecipePage, String>(
-  (Ref ref, String tag) async {
-    final Either<Failure, RecipePage> result =
-        await ref.watch(getRecipesByTagUseCaseProvider).call(tag);
-    return result.fold<RecipePage>(
-      (Failure failure) => throw failure,
-      (RecipePage page) => page,
-    );
-  },
-);
+    FutureProvider.family<RecipePage, String>((Ref ref, String tag) async {
+      final Either<Failure, RecipePage> result = await ref
+          .watch(getRecipesByTagUseCaseProvider)
+          .call(tag);
+      return result.fold<RecipePage>(
+        (Failure failure) => throw failure,
+        (RecipePage page) => page,
+      );
+    });

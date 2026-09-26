@@ -40,7 +40,9 @@ final class NotFoundFailure extends Failure {
 
 /// Les données locales sont illisibles.
 final class CacheFailure extends Failure {
-  const CacheFailure([super.message = 'Erreur de lecture des données hors ligne.']);
+  const CacheFailure([
+    super.message = 'Erreur de lecture des données hors ligne.',
+  ]);
 }
 
 /// Une règle métier n'est pas respectée (saisie invalide…).

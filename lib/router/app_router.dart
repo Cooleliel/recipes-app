@@ -19,8 +19,9 @@ import 'package:recipes_app/router/home_shell.dart';
 /// Il écoute [authNotifierProvider] : à chaque changement de session, la
 /// redirection est recalculée (connexion → Recettes, déconnexion → Login).
 final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
-  final ValueNotifier<AuthState> authState =
-      ValueNotifier<AuthState>(ref.read(authNotifierProvider));
+  final ValueNotifier<AuthState> authState = ValueNotifier<AuthState>(
+    ref.read(authNotifierProvider),
+  );
   ref.listen<AuthState>(
     authNotifierProvider,
     (AuthState? previous, AuthState next) => authState.value = next,
@@ -51,16 +52,16 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
         path: AppRoutes.recipeDetailPattern,
         builder: (BuildContext context, GoRouterState state) =>
             RecipeDetailPage(
-          recipeId: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
-        ),
+              recipeId: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
+            ),
       ),
       StatefulShellRoute.indexedStack(
-        builder: (
-          BuildContext context,
-          GoRouterState state,
-          StatefulNavigationShell navigationShell,
-        ) =>
-            HomeShell(navigationShell: navigationShell),
+        builder:
+            (
+              BuildContext context,
+              GoRouterState state,
+              StatefulNavigationShell navigationShell,
+            ) => HomeShell(navigationShell: navigationShell),
         branches: <StatefulShellBranch>[
           StatefulShellBranch(
             routes: <RouteBase>[
@@ -82,8 +83,8 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
                     path: AppRoutes.recipesByTagSegment,
                     builder: (BuildContext context, GoRouterState state) =>
                         RecipesByTagPage(
-                      tag: state.uri.queryParameters['tag'] ?? '',
-                    ),
+                          tag: state.uri.queryParameters['tag'] ?? '',
+                        ),
                   ),
                 ],
               ),

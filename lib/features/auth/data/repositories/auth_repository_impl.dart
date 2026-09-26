@@ -18,10 +18,10 @@ class AuthRepositoryImpl implements AuthRepository {
     required AuthLocalDataSource local,
     required TokenStorage tokenStorage,
     required NetworkInfo networkInfo,
-  })  : _remote = remote,
-        _local = local,
-        _tokenStorage = tokenStorage,
-        _networkInfo = networkInfo;
+  }) : _remote = remote,
+       _local = local,
+       _tokenStorage = tokenStorage,
+       _networkInfo = networkInfo;
 
   final AuthRemoteDataSource _remote;
   final AuthLocalDataSource _local;
@@ -39,8 +39,10 @@ class AuthRepositoryImpl implements AuthRepository {
       );
     }
     try {
-      final AuthSessionModel session =
-          await _remote.login(email: email, password: password);
+      final AuthSessionModel session = await _remote.login(
+        email: email,
+        password: password,
+      );
       await _saveSession(session);
       return Right<Failure, User>(session.user.toEntity());
     } on Exception catch (error) {
@@ -67,9 +69,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       if (session == null) {
         return const Left<Failure, User>(
-          ServerFailure(
-            'Compte créé : confirme ton email, puis connecte-toi.',
-          ),
+          ServerFailure('Compte créé : confirme ton email, puis connecte-toi.'),
         );
       }
       await _saveSession(session);

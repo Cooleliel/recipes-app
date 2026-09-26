@@ -69,17 +69,17 @@ class _RecipesPageState extends ConsumerState<RecipesPage> {
     final RecipesState state = ref.watch(recipesNotifierProvider);
 
     // Erreur alors que des recettes sont déjà affichées : simple toast.
-    ref.listen<RecipesState>(
-      recipesNotifierProvider,
-      (RecipesState? previous, RecipesState next) {
-        final Failure? failure = next.failure;
-        if (failure != null &&
-            next.recipes.isNotEmpty &&
-            failure != previous?.failure) {
-          AppToast.show(context, failure.message, type: ToastType.error);
-        }
-      },
-    );
+    ref.listen<RecipesState>(recipesNotifierProvider, (
+      RecipesState? previous,
+      RecipesState next,
+    ) {
+      final Failure? failure = next.failure;
+      if (failure != null &&
+          next.recipes.isNotEmpty &&
+          failure != previous?.failure) {
+        AppToast.show(context, failure.message, type: ToastType.error);
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(

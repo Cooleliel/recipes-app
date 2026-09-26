@@ -21,7 +21,7 @@ abstract final class AppRoutes {
   /// Le tag passe en paramètre de requête : `Uri` gère l'encodage
   /// (espaces, accents…).
   static String recipesByTag(String tag) => Uri(
-        path: recipesByTagPath,
-        queryParameters: <String, String>{'tag': tag},
-      ).toString();
+    path: recipesByTagPath,
+    queryParameters: <String, String>{'tag': tag},
+  ).toString();
 }

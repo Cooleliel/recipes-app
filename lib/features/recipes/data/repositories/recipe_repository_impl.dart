@@ -20,9 +20,9 @@ class RecipeRepositoryImpl implements RecipeRepository {
     required RecipeRemoteDataSource remote,
     required RecipeLocalDataSource local,
     required NetworkInfo networkInfo,
-  })  : _remote = remote,
-        _local = local,
-        _networkInfo = networkInfo;
+  }) : _remote = remote,
+       _local = local,
+       _networkInfo = networkInfo;
 
   final RecipeRemoteDataSource _remote;
   final RecipeLocalDataSource _local;
@@ -35,8 +35,10 @@ class RecipeRepositoryImpl implements RecipeRepository {
   }) {
     return _onlineFirst<RecipePage>(
       remote: () async {
-        final RecipePageModel page =
-            await _remote.getRecipes(offset: offset, limit: limit);
+        final RecipePageModel page = await _remote.getRecipes(
+          offset: offset,
+          limit: limit,
+        );
         await _local.cachePage(offset: offset, limit: limit, page: page);
         return RecipePage(
           recipes: _toEntities(page.recipes),
@@ -44,8 +46,10 @@ class RecipeRepositoryImpl implements RecipeRepository {
         );
       },
       cache: () {
-        final RecipePageModel? cached =
-            _local.getCachedPage(offset: offset, limit: limit);
+        final RecipePageModel? cached = _local.getCachedPage(
+          offset: offset,
+          limit: limit,
+        );
         if (cached == null) return null;
         return RecipePage(
           recipes: _toEntities(cached.recipes),
@@ -126,7 +130,8 @@ class RecipeRepositoryImpl implements RecipeRepository {
         return RecipePage(recipes: _toEntities(recipes), hasMore: false);
       },
       cache: () {
-        final List<RecipeModel> recipes = _local.getCachedRecipesByTag(tag) ??
+        final List<RecipeModel> recipes =
+            _local.getCachedRecipesByTag(tag) ??
             _local
                 .getAllCachedRecipes()
                 .where((RecipeModel recipe) => recipe.tags.contains(tag))

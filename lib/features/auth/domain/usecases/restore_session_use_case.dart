@@ -14,9 +14,6 @@ class RestoreSessionUseCase {
   Future<User?> call() async {
     if (!await _repository.hasSession()) return null;
     final Either<Failure, User> result = await _repository.getCurrentUser();
-    return result.fold<User?>(
-      (Failure failure) => null,
-      (User user) => user,
-    );
+    return result.fold<User?>((Failure failure) => null, (User user) => user);
   }
 }

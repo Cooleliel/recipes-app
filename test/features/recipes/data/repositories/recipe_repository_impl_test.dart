@@ -42,8 +42,10 @@ void main() {
     rating: 4.6,
     reviewCount: 98,
   );
-  const RecipePageModel firstPage =
-      RecipePageModel(recipes: <RecipeModel>[pizza], total: 50);
+  const RecipePageModel firstPage = RecipePageModel(
+    recipes: <RecipeModel>[pizza],
+    total: 50,
+  );
 
   setUpAll(() {
     registerFallbackValue(firstPage);
@@ -61,40 +63,51 @@ void main() {
   });
 
   void givenOnline(bool isOnline) {
-    when(() => networkInfo.isConnected)
-        .thenAnswer((Invocation invocation) async => isOnline);
+    when(
+      () => networkInfo.isConnected,
+    ).thenAnswer((Invocation invocation) async => isOnline);
   }
 
   group('getRecipes', () {
-    test('en ligne : renvoie les recettes du serveur et les met en cache',
-        () async {
-      givenOnline(true);
-      when(() => remote.getRecipes(offset: 0, limit: 10))
-          .thenAnswer((Invocation invocation) async => firstPage);
-      when(() => local.cachePage(offset: 0, limit: 10, page: firstPage))
-          .thenAnswer((Invocation invocation) async {});
+    test(
+      'en ligne : renvoie les recettes du serveur et les met en cache',
+      () async {
+        givenOnline(true);
+        when(
+          () => remote.getRecipes(offset: 0, limit: 10),
+        ).thenAnswer((Invocation invocation) async => firstPage);
+        when(
+          () => local.cachePage(offset: 0, limit: 10, page: firstPage),
+        ).thenAnswer((Invocation invocation) async {});
 
-      final Either<Failure, RecipePage> result =
-          await repository.getRecipes(offset: 0, limit: 10);
+        final Either<Failure, RecipePage> result = await repository.getRecipes(
+          offset: 0,
+          limit: 10,
+        );
 
-      final RecipePage page = result.fold(
-        (Failure failure) => fail('Échec inattendu : $failure'),
-        (RecipePage value) => value,
-      );
-      expect(page.recipes.single.name, 'Classic Margherita Pizza');
-      expect(page.hasMore, isTrue);
-      expect(page.isFromCache, isFalse);
-      verify(() => local.cachePage(offset: 0, limit: 10, page: firstPage))
-          .called(1);
-    });
+        final RecipePage page = result.fold(
+          (Failure failure) => fail('Échec inattendu : $failure'),
+          (RecipePage value) => value,
+        );
+        expect(page.recipes.single.name, 'Classic Margherita Pizza');
+        expect(page.hasMore, isTrue);
+        expect(page.isFromCache, isFalse);
+        verify(
+          () => local.cachePage(offset: 0, limit: 10, page: firstPage),
+        ).called(1);
+      },
+    );
 
     test('hors ligne : renvoie le cache sans appeler le serveur', () async {
       givenOnline(false);
-      when(() => local.getCachedPage(offset: 0, limit: 10))
-          .thenReturn(firstPage);
+      when(
+        () => local.getCachedPage(offset: 0, limit: 10),
+      ).thenReturn(firstPage);
 
-      final Either<Failure, RecipePage> result =
-          await repository.getRecipes(offset: 0, limit: 10);
+      final Either<Failure, RecipePage> result = await repository.getRecipes(
+        offset: 0,
+        limit: 10,
+      );
 
       final RecipePage page = result.fold(
         (Failure failure) => fail('Échec inattendu : $failure'),
@@ -112,13 +125,17 @@ void main() {
 
     test('erreur réseau en ligne : bascule sur le cache', () async {
       givenOnline(true);
-      when(() => remote.getRecipes(offset: 0, limit: 10))
-          .thenThrow(const NetworkException());
-      when(() => local.getCachedPage(offset: 0, limit: 10))
-          .thenReturn(firstPage);
+      when(
+        () => remote.getRecipes(offset: 0, limit: 10),
+      ).thenThrow(const NetworkException());
+      when(
+        () => local.getCachedPage(offset: 0, limit: 10),
+      ).thenReturn(firstPage);
 
-      final Either<Failure, RecipePage> result =
-          await repository.getRecipes(offset: 0, limit: 10);
+      final Either<Failure, RecipePage> result = await repository.getRecipes(
+        offset: 0,
+        limit: 10,
+      );
 
       final RecipePage page = result.fold(
         (Failure failure) => fail('Échec inattendu : $failure'),
@@ -131,8 +148,10 @@ void main() {
       givenOnline(false);
       when(() => local.getCachedPage(offset: 0, limit: 10)).thenReturn(null);
 
-      final Either<Failure, RecipePage> result =
-          await repository.getRecipes(offset: 0, limit: 10);
+      final Either<Failure, RecipePage> result = await repository.getRecipes(
+        offset: 0,
+        limit: 10,
+      );
 
       result.fold<void>(
         (Failure failure) => expect(failure, isA<NetworkFailure>()),
@@ -142,11 +161,14 @@ void main() {
 
     test('session expirée : renvoie une AuthFailure', () async {
       givenOnline(true);
-      when(() => remote.getRecipes(offset: 0, limit: 10))
-          .thenThrow(const UnauthorizedException());
+      when(
+        () => remote.getRecipes(offset: 0, limit: 10),
+      ).thenThrow(const UnauthorizedException());
 
-      final Either<Failure, RecipePage> result =
-          await repository.getRecipes(offset: 0, limit: 10);
+      final Either<Failure, RecipePage> result = await repository.getRecipes(
+        offset: 0,
+        limit: 10,
+      );
 
       result.fold<void>(
         (Failure failure) => expect(failure, isA<AuthFailure>()),
@@ -158,11 +180,13 @@ void main() {
   group('getRecipeDetail', () {
     test('recette inexistante : renvoie une NotFoundFailure', () async {
       givenOnline(true);
-      when(() => remote.getRecipeDetail(999))
-          .thenThrow(const NotFoundException());
+      when(
+        () => remote.getRecipeDetail(999),
+      ).thenThrow(const NotFoundException());
 
-      final Either<Failure, Recipe> result =
-          await repository.getRecipeDetail(999);
+      final Either<Failure, Recipe> result = await repository.getRecipeDetail(
+        999,
+      );
 
       result.fold<void>(
         (Failure failure) => expect(failure, isA<NotFoundFailure>()),
@@ -174,7 +198,9 @@ void main() {
       givenOnline(false);
       when(() => local.getCachedRecipe(1)).thenReturn(pizza);
 
-      final Either<Failure, Recipe> result = await repository.getRecipeDetail(1);
+      final Either<Failure, Recipe> result = await repository.getRecipeDetail(
+        1,
+      );
 
       final Recipe recipe = result.fold(
         (Failure failure) => fail('Échec inattendu : $failure'),

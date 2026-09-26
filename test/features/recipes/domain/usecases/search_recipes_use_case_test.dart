@@ -9,8 +9,7 @@ import 'package:recipes_app/features/recipes/domain/usecases/search_recipes_use_
 class MockRecipeRepository extends Mock implements RecipeRepository {}
 
 void main() {
-  test('refuse une recherche trop courte sans appeler le repository',
-      () async {
+  test('refuse une recherche trop courte sans appeler le repository', () async {
     final MockRecipeRepository repository = MockRecipeRepository();
     final SearchRecipesUseCase useCase = SearchRecipesUseCase(repository);
 

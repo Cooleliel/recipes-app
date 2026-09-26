@@ -53,25 +53,29 @@ void main() {
       tokenStorage: tokenStorage,
       networkInfo: networkInfo,
     );
-    when(() => networkInfo.isConnected)
-        .thenAnswer((Invocation invocation) async => true);
+    when(
+      () => networkInfo.isConnected,
+    ).thenAnswer((Invocation invocation) async => true);
     when(
       () => tokenStorage.saveTokens(
         accessToken: any(named: 'accessToken'),
         refreshToken: any(named: 'refreshToken'),
       ),
     ).thenAnswer((Invocation invocation) async {});
-    when(() => tokenStorage.clear())
-        .thenAnswer((Invocation invocation) async {});
-    when(() => local.cacheUser(any()))
-        .thenAnswer((Invocation invocation) async {});
+    when(
+      () => tokenStorage.clear(),
+    ).thenAnswer((Invocation invocation) async {});
+    when(
+      () => local.cacheUser(any()),
+    ).thenAnswer((Invocation invocation) async {});
     when(() => local.clear()).thenAnswer((Invocation invocation) async {});
   });
 
   group('login', () {
     test('succès : enregistre les tokens et met le profil en cache', () async {
-      when(() => remote.login(email: 'test@exemple.com', password: 'secret123'))
-          .thenAnswer((Invocation invocation) async => session);
+      when(
+        () => remote.login(email: 'test@exemple.com', password: 'secret123'),
+      ).thenAnswer((Invocation invocation) async => session);
 
       final Either<Failure, User> result = await repository.login(
         email: 'test@exemple.com',
@@ -92,43 +96,43 @@ void main() {
       verify(() => local.cacheUser(user)).called(1);
     });
 
-    test('identifiants refusés : message clair et aucun token enregistré',
-        () async {
-      when(
-        () => remote.login(
-          email: any(named: 'email'),
-          password: any(named: 'password'),
-        ),
-      ).thenThrow(
-        const ServerException(
-          'Email ou mot de passe incorrect.',
-          statusCode: 400,
-        ),
-      );
+    test(
+      'identifiants refusés : message clair et aucun token enregistré',
+      () async {
+        when(
+          () => remote.login(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenThrow(
+          const ServerException(
+            'Email ou mot de passe incorrect.',
+            statusCode: 400,
+          ),
+        );
 
-      final Either<Failure, User> result = await repository.login(
-        email: 'test@exemple.com',
-        password: 'mauvais',
-      );
+        final Either<Failure, User> result = await repository.login(
+          email: 'test@exemple.com',
+          password: 'mauvais',
+        );
 
-      result.fold<void>(
-        (Failure failure) {
+        result.fold<void>((Failure failure) {
           expect(failure, isA<ServerFailure>());
           expect(failure.message, 'Email ou mot de passe incorrect.');
-        },
-        (User value) => fail('Une erreur était attendue'),
-      );
-      verifyNever(
-        () => tokenStorage.saveTokens(
-          accessToken: any(named: 'accessToken'),
-          refreshToken: any(named: 'refreshToken'),
-        ),
-      );
-    });
+        }, (User value) => fail('Une erreur était attendue'));
+        verifyNever(
+          () => tokenStorage.saveTokens(
+            accessToken: any(named: 'accessToken'),
+            refreshToken: any(named: 'refreshToken'),
+          ),
+        );
+      },
+    );
 
     test('hors ligne : NetworkFailure sans appel au serveur', () async {
-      when(() => networkInfo.isConnected)
-          .thenAnswer((Invocation invocation) async => false);
+      when(
+        () => networkInfo.isConnected,
+      ).thenAnswer((Invocation invocation) async => false);
 
       final Either<Failure, User> result = await repository.login(
         email: 'test@exemple.com',
@@ -149,22 +153,25 @@ void main() {
   });
 
   group('logout', () {
-    test('efface la session locale même si le serveur est injoignable',
-        () async {
-      when(() => remote.logout()).thenThrow(const NetworkException());
+    test(
+      'efface la session locale même si le serveur est injoignable',
+      () async {
+        when(() => remote.logout()).thenThrow(const NetworkException());
 
-      final Either<Failure, Unit> result = await repository.logout();
+        final Either<Failure, Unit> result = await repository.logout();
 
-      expect(result.isRight(), isTrue);
-      verify(() => tokenStorage.clear()).called(1);
-      verify(() => local.clear()).called(1);
-    });
+        expect(result.isRight(), isTrue);
+        verify(() => tokenStorage.clear()).called(1);
+        verify(() => local.clear()).called(1);
+      },
+    );
   });
 
   group('getCurrentUser', () {
     test('hors ligne : renvoie le profil enregistré', () async {
-      when(() => networkInfo.isConnected)
-          .thenAnswer((Invocation invocation) async => false);
+      when(
+        () => networkInfo.isConnected,
+      ).thenAnswer((Invocation invocation) async => false);
       when(() => local.getCachedUser()).thenReturn(user);
 
       final Either<Failure, User> result = await repository.getCurrentUser();

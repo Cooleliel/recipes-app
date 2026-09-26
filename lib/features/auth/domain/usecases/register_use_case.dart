@@ -15,7 +15,8 @@ class RegisterUseCase {
     required String password,
     String? displayName,
   }) async {
-    final String? error = CredentialsValidator.email(email) ??
+    final String? error =
+        CredentialsValidator.email(email) ??
         CredentialsValidator.password(password) ??
         CredentialsValidator.displayName(displayName);
     if (error != null) return Left<Failure, User>(ValidationFailure(error));

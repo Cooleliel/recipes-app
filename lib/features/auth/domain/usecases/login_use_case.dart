@@ -14,7 +14,8 @@ class LoginUseCase {
     required String email,
     required String password,
   }) async {
-    final String? error = CredentialsValidator.email(email) ??
+    final String? error =
+        CredentialsValidator.email(email) ??
         CredentialsValidator.password(password);
     if (error != null) return Left<Failure, User>(ValidationFailure(error));
     return _repository.login(email: email.trim(), password: password);

@@ -37,13 +37,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     final Failure? failure = await ref
         .read(authNotifierProvider.notifier)
-        .login(email: _emailController.text, password: _passwordController.text);
+        .login(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
 
     // En cas de succès, le routeur quitte déjà cet écran.
     if (!mounted) return;
     setState(() => _isSubmitting = false);
     if (failure != null) {
-            AppToast.show(context, failure.message, type: ToastType.error);
+      AppToast.show(context, failure.message, type: ToastType.error);
     }
   }
 
@@ -51,8 +54,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final AuthState authState = ref.watch(authNotifierProvider);
-    final String? sessionMessage =
-        authState is Unauthenticated ? authState.message : null;
+    final String? sessionMessage = authState is Unauthenticated
+        ? authState.message
+        : null;
 
     return Scaffold(
       body: SafeArea(
@@ -113,7 +117,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         child: _isSubmitting
                             ? const SizedBox.square(
                                 dimension: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Text('Se connecter'),
                       ),
@@ -122,7 +128,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         onPressed: _isSubmitting
                             ? null
                             : () => context.go(AppRoutes.register),
-                        child: const Text('Pas encore de compte ? Créer un compte'),
+                        child: const Text(
+                          'Pas encore de compte ? Créer un compte',
+                        ),
                       ),
                     ],
                   ),

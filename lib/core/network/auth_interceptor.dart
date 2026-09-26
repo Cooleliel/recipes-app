@@ -13,9 +13,9 @@ class AuthInterceptor extends QueuedInterceptor {
     required TokenStorage tokenStorage,
     required Dio plainDio,
     required void Function() onSessionExpired,
-  })  : _tokenStorage = tokenStorage,
-        _plainDio = plainDio,
-        _onSessionExpired = onSessionExpired;
+  }) : _tokenStorage = tokenStorage,
+       _plainDio = plainDio,
+       _onSessionExpired = onSessionExpired;
 
   /// À mettre dans `Options.extra` pour les requêtes publiques
   /// (connexion, inscription) : pas de token ni de refresh.
@@ -51,7 +51,8 @@ class AuthInterceptor extends QueuedInterceptor {
     ErrorInterceptorHandler handler,
   ) async {
     final RequestOptions request = err.requestOptions;
-    final bool canRefresh = DioErrorMapper.isAuthError(err.response) &&
+    final bool canRefresh =
+        DioErrorMapper.isAuthError(err.response) &&
         request.extra[skipAuth] != true &&
         request.extra[_retried] != true;
     if (!canRefresh) {
@@ -77,14 +78,13 @@ class AuthInterceptor extends QueuedInterceptor {
     }
 
     try {
-      final Response<Map<String, dynamic>> response =
-          await _plainDio.post<Map<String, dynamic>>(
-        ApiConstants.token,
-        queryParameters: <String, String>{'grant_type': 'refresh_token'},
-        data: <String, String>{'refresh_token': refreshToken},
-      );
-      final Map<String, dynamic> body =
-          response.data ?? <String, dynamic>{};
+      final Response<Map<String, dynamic>> response = await _plainDio
+          .post<Map<String, dynamic>>(
+            ApiConstants.token,
+            queryParameters: <String, String>{'grant_type': 'refresh_token'},
+            data: <String, String>{'refresh_token': refreshToken},
+          );
+      final Map<String, dynamic> body = response.data ?? <String, dynamic>{};
       final String newAccessToken = body['access_token'] as String;
       final String newRefreshToken = body['refresh_token'] as String;
       await _tokenStorage.saveTokens(
@@ -122,8 +122,9 @@ class AuthInterceptor extends QueuedInterceptor {
       extra: <String, dynamic>{...request.extra, _retried: true},
     );
     try {
-      final Response<dynamic> response =
-          await _plainDio.fetch<dynamic>(retryOptions);
+      final Response<dynamic> response = await _plainDio.fetch<dynamic>(
+        retryOptions,
+      );
       handler.resolve(response);
     } on DioException catch (retryError) {
       handler.next(retryError);

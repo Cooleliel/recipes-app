@@ -7,13 +7,12 @@ import 'package:recipes_app/features/recipes/domain/entities/recipe.dart';
 
 /// Détail d'une recette, identifiée par son id.
 final FutureProviderFamily<Recipe, int> recipeDetailProvider =
-    FutureProvider.family<Recipe, int>(
-  (Ref ref, int id) async {
-    final Either<Failure, Recipe> result =
-        await ref.watch(getRecipeDetailUseCaseProvider).call(id);
-    return result.fold<Recipe>(
-      (Failure failure) => throw failure,
-      (Recipe recipe) => recipe,
-    );
-  },
-);
+    FutureProvider.family<Recipe, int>((Ref ref, int id) async {
+      final Either<Failure, Recipe> result = await ref
+          .watch(getRecipeDetailUseCaseProvider)
+          .call(id);
+      return result.fold<Recipe>(
+        (Failure failure) => throw failure,
+        (Recipe recipe) => recipe,
+      );
+    });

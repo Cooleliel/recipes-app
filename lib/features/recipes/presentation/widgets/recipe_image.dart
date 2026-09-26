@@ -21,8 +21,8 @@ class RecipeImage extends StatelessWidget {
     final Widget placeholder = _ImagePlaceholder(width: width, height: height);
     if (imageUrl.isEmpty) return placeholder;
 
-    final int cacheWidth =
-        (width * MediaQuery.devicePixelRatioOf(context)).round();
+    final int cacheWidth = (width * MediaQuery.devicePixelRatioOf(context))
+        .round();
     return Image.network(
       imageUrl,
       width: width,
@@ -30,18 +30,15 @@ class RecipeImage extends StatelessWidget {
       fit: BoxFit.cover,
       cacheWidth: cacheWidth,
       semanticLabel: semanticLabel,
-      loadingBuilder: (
-        BuildContext context,
-        Widget child,
-        ImageChunkEvent? loadingProgress,
-      ) =>
-          loadingProgress == null ? child : placeholder,
-      errorBuilder: (
-        BuildContext context,
-        Object error,
-        StackTrace? stackTrace,
-      ) =>
-          placeholder,
+      loadingBuilder:
+          (
+            BuildContext context,
+            Widget child,
+            ImageChunkEvent? loadingProgress,
+          ) => loadingProgress == null ? child : placeholder,
+      errorBuilder:
+          (BuildContext context, Object error, StackTrace? stackTrace) =>
+              placeholder,
     );
   }
 }

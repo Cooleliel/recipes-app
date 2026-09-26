@@ -42,10 +42,10 @@ class AuthNotifier extends Notifier<AuthState> {
         .watch(sessionEventsProvider)
         .onSessionExpired
         .listen((void event) {
-      state = const Unauthenticated(
-        message: 'Ta session a expiré. Reconnecte-toi.',
-      );
-    });
+          state = const Unauthenticated(
+            message: 'Ta session a expiré. Reconnecte-toi.',
+          );
+        });
     ref.onDispose(subscription.cancel);
 
     unawaited(Future<void>.microtask(_restoreSession));
@@ -92,12 +92,9 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   Failure? _applyResult(Either<Failure, User> result) {
-    return result.fold<Failure?>(
-      (Failure failure) => failure,
-      (User user) {
-        state = Authenticated(user);
-        return null;
-      },
-    );
+    return result.fold<Failure?>((Failure failure) => failure, (User user) {
+      state = Authenticated(user);
+      return null;
+    });
   }
 }

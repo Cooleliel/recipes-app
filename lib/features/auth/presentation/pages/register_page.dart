@@ -47,18 +47,19 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     FocusScope.of(context).unfocus();
     setState(() => _isSubmitting = true);
 
-    final Failure? failure =
-        await ref.read(authNotifierProvider.notifier).register(
-              email: _emailController.text,
-              password: _passwordController.text,
-              displayName: _nameController.text,
-            );
+    final Failure? failure = await ref
+        .read(authNotifierProvider.notifier)
+        .register(
+          email: _emailController.text,
+          password: _passwordController.text,
+          displayName: _nameController.text,
+        );
 
     // En cas de succès, le routeur quitte déjà cet écran.
     if (!mounted) return;
     setState(() => _isSubmitting = false);
     if (failure != null) {
-            AppToast.show(context, failure.message, type: ToastType.error);
+      AppToast.show(context, failure.message, type: ToastType.error);
     }
   }
 
@@ -120,14 +121,18 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       PasswordField(
                         controller: _passwordController,
                         textInputAction: TextInputAction.next,
-                        autofillHints: const <String>[AutofillHints.newPassword],
+                        autofillHints: const <String>[
+                          AutofillHints.newPassword,
+                        ],
                         validator: CredentialsValidator.password,
                       ),
                       const SizedBox(height: 16),
                       PasswordField(
                         controller: _confirmController,
                         label: 'Confirmer le mot de passe',
-                        autofillHints: const <String>[AutofillHints.newPassword],
+                        autofillHints: const <String>[
+                          AutofillHints.newPassword,
+                        ],
                         validator: _validateConfirmation,
                         onFieldSubmitted: (String value) => _submit(),
                       ),
@@ -137,7 +142,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         child: _isSubmitting
                             ? const SizedBox.square(
                                 dimension: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Text('Créer mon compte'),
                       ),

@@ -14,21 +14,19 @@ import 'package:recipes_app/core/storage/token_storage.dart';
 // (ex. NetworkInfo) : on peut le remplacer par un mock dans les tests.
 
 final Provider<FlutterSecureStorage> secureStorageProvider =
-    Provider<FlutterSecureStorage>(
-  (Ref ref) => const FlutterSecureStorage(),
-);
+    Provider<FlutterSecureStorage>((Ref ref) => const FlutterSecureStorage());
 
 final Provider<TokenStorage> tokenStorageProvider = Provider<TokenStorage>(
   (Ref ref) => TokenStorage(ref.watch(secureStorageProvider)),
 );
 
-final Provider<SessionEvents> sessionEventsProvider = Provider<SessionEvents>(
-  (Ref ref) {
-    final SessionEvents events = SessionEvents();
-    ref.onDispose(events.dispose);
-    return events;
-  },
-);
+final Provider<SessionEvents> sessionEventsProvider = Provider<SessionEvents>((
+  Ref ref,
+) {
+  final SessionEvents events = SessionEvents();
+  ref.onDispose(events.dispose);
+  return events;
+});
 
 final Provider<NetworkInfo> networkInfoProvider = Provider<NetworkInfo>(
   (Ref ref) => NetworkInfoImpl(Connectivity()),
@@ -40,17 +38,15 @@ final StreamProvider<bool> connectivityStatusProvider = StreamProvider<bool>(
 );
 
 /// Client HTTP de l'app : Dio + intercepteur d'authentification.
-final Provider<Dio> dioProvider = Provider<Dio>(
-  (Ref ref) {
-    final Dio dio = DioClient.create();
-    dio.interceptors.add(
-      AuthInterceptor(
-        tokenStorage: ref.watch(tokenStorageProvider),
-        plainDio: DioClient.create(),
-        onSessionExpired: ref.watch(sessionEventsProvider).notifySessionExpired,
-      ),
-    );
-    ref.onDispose(dio.close);
-    return dio;
-  },
-);
+final Provider<Dio> dioProvider = Provider<Dio>((Ref ref) {
+  final Dio dio = DioClient.create();
+  dio.interceptors.add(
+    AuthInterceptor(
+      tokenStorage: ref.watch(tokenStorageProvider),
+      plainDio: DioClient.create(),
+      onSessionExpired: ref.watch(sessionEventsProvider).notifySessionExpired,
+    ),
+  );
+  ref.onDispose(dio.close);
+  return dio;
+});

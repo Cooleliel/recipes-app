@@ -92,7 +92,9 @@ class _ProfileContent extends StatelessWidget {
           child: CircleAvatar(
             radius: 44,
             child: Text(
-              user.label.isEmpty ? '?' : user.label.substring(0, 1).toUpperCase(),
+              user.label.isEmpty
+                  ? '?'
+                  : user.label.substring(0, 1).toUpperCase(),
               style: theme.textTheme.headlineMedium,
             ),
           ),

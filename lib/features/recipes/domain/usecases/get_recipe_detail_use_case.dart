@@ -11,7 +11,9 @@ class GetRecipeDetailUseCase {
 
   Future<Either<Failure, Recipe>> call(int id) async {
     if (id <= 0) {
-      return const Left<Failure, Recipe>(NotFoundFailure('Recette introuvable.'));
+      return const Left<Failure, Recipe>(
+        NotFoundFailure('Recette introuvable.'),
+      );
     }
     return _repository.getRecipeDetail(id);
   }

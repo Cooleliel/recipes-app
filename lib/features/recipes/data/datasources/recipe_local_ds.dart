@@ -102,8 +102,9 @@ class RecipeLocalDataSourceImpl implements RecipeLocalDataSource {
 
   @override
   Future<void> cacheRecipesByTag(String tag, List<RecipeModel> recipes) async {
-    final List<int> ids =
-        recipes.map((RecipeModel recipe) => recipe.id).toList();
+    final List<int> ids = recipes
+        .map((RecipeModel recipe) => recipe.id)
+        .toList();
     await _box.put(_tagKey(tag), jsonEncode(ids));
     await cacheRecipes(recipes);
   }
