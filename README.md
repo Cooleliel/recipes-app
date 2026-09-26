@@ -217,4 +217,4 @@ utilisées par l'app (connexion, liste paginée, recherche, détail, catégories
 
 ---
 
-Réalisé par **The Teacher** — FlutterFire Summer Camp 2026.
+Réalisé par **Cooeliel** — FlutterFire Summer Camp 2026.
