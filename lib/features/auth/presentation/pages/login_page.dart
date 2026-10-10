@@ -6,15 +6,15 @@ import 'package:recipes_app/core/widgets/app_toast.dart';
 import 'package:recipes_app/features/auth/domain/validators/credentials_validator.dart';
 import 'package:recipes_app/features/auth/presentation/notifiers/auth_notifier.dart';
 import 'package:recipes_app/features/auth/presentation/widgets/password_field.dart';
+import 'package:recipes_app/l10n/app_localizations.dart';
 import 'package:recipes_app/router/app_routes.dart';
 
 /// Écran de connexion (email + mot de passe).
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
-  
   /// Clés utilisées par les tests pour retrouver les widgets sans dépendre
-  /// du texte affiché.
+  /// du texte affiché (qui changera avec la traduction).
   static const Key emailFieldKey = Key('login_email_field');
   static const Key passwordFieldKey = Key('login_password_field');
   static const Key submitButtonKey = Key('login_submit_button');
@@ -60,6 +60,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
     final AuthState authState = ref.watch(authNotifierProvider);
     final String? sessionMessage = authState is Unauthenticated
         ? authState.message
@@ -85,13 +86,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Recipes App',
+                        l10n.appTitle,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.headlineMedium,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Connecte-toi pour accéder aux recettes',
+                        l10n.loginSubtitle,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium,
                       ),
@@ -107,16 +108,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         textInputAction: TextInputAction.next,
                         autofillHints: const <String>[AutofillHints.email],
                         validator: CredentialsValidator.email,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon: Icon(Icons.email_outlined),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: l10n.emailLabel,
+                          prefixIcon: const Icon(Icons.email_outlined),
+                          border: const OutlineInputBorder(),
                         ),
                       ),
                       const SizedBox(height: 16),
                       PasswordField(
                         key: LoginPage.passwordFieldKey,
                         controller: _passwordController,
+                        label: l10n.passwordLabel,
                         validator: CredentialsValidator.password,
                         onFieldSubmitted: (String value) => _submit(),
                       ),
@@ -131,16 +133,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text('Se connecter'),
+                            : Text(l10n.loginButton),
                       ),
                       const SizedBox(height: 12),
                       TextButton(
                         onPressed: _isSubmitting
                             ? null
                             : () => context.go(AppRoutes.register),
-                        child: const Text(
-                          'Pas encore de compte ? Créer un compte',
-                        ),
+                        child: Text(l10n.goToRegister),
                       ),
                     ],
                   ),
