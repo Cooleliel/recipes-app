@@ -10,6 +10,7 @@ import 'package:recipes_app/core/widgets/error_view.dart';
 import 'package:recipes_app/features/recipes/domain/entities/recipe.dart';
 import 'package:recipes_app/features/recipes/presentation/notifiers/recipes_notifier.dart';
 import 'package:recipes_app/features/recipes/presentation/widgets/recipe_card.dart';
+import 'package:recipes_app/l10n/app_localizations.dart';
 import 'package:recipes_app/router/app_routes.dart';
 
 /// Écran Liste : recherche + scroll infini + tirer pour rafraîchir.
@@ -83,7 +84,7 @@ class _RecipesPageState extends ConsumerState<RecipesPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recettes'),
+        title: Text(AppLocalizations.of(context)!.recipesTitle),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(64),
           child: Padding(
@@ -93,7 +94,7 @@ class _RecipesPageState extends ConsumerState<RecipesPage> {
               onChanged: _onSearchChanged,
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
-                hintText: 'Rechercher une recette…',
+                hintText: AppLocalizations.of(context)!.searchHint,
                 prefixIcon: const Icon(Icons.search),
                 isDense: true,
                 border: const OutlineInputBorder(),
@@ -198,7 +199,10 @@ class _ListFooter extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(loadMoreFailure.message, textAlign: TextAlign.center),
-            TextButton(onPressed: onRetry, child: const Text('Réessayer')),
+            TextButton(
+              onPressed: onRetry,
+              child: Text(AppLocalizations.of(context)!.retry),
+            ),
           ],
         ),
       );
@@ -207,7 +211,7 @@ class _ListFooter extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.all(16),
         child: Text(
-          'Toutes les recettes sont affichées.',
+          AppLocalizations.of(context)!.allRecipesShown,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodySmall,
         ),
@@ -229,7 +233,7 @@ class _CacheNotice extends StatelessWidget {
       color: colors.tertiaryContainer,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Text(
-        'Données enregistrées : tire vers le bas pour actualiser.',
+        AppLocalizations.of(context)!.cachedDataNotice,
         style: TextStyle(color: colors.onTertiaryContainer),
       ),
     );
