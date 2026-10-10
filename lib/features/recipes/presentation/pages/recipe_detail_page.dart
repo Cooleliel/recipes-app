@@ -13,6 +13,10 @@ import 'package:recipes_app/router/app_routes.dart';
 class RecipeDetailPage extends ConsumerWidget {
   const RecipeDetailPage({super.key, required this.recipeId});
 
+  
+  /// Présente quand la recette est chargée (utilisée par les tests).
+  static const Key contentKey = Key('recipe_detail_content');
+
   final int recipeId;
 
   @override
@@ -49,6 +53,7 @@ class _RecipeDetailContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.sizeOf(context).width;
     return CustomScrollView(
+      key: RecipeDetailPage.contentKey,
       slivers: <Widget>[
         SliverAppBar(
           pinned: true,
