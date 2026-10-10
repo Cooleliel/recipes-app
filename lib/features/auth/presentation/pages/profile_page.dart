@@ -10,6 +10,11 @@ import 'package:recipes_app/features/auth/presentation/notifiers/current_user_pr
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
 
+  
+  /// Clés utilisées par les tests d'intégration.
+  static const Key logoutButtonKey = Key('profile_logout_button');
+  static const Key confirmLogoutButtonKey = Key('profile_confirm_logout');
+
   Future<void> _confirmLogout(BuildContext context, WidgetRef ref) async {
     final bool? confirmed = await showDialog<bool>(
       context: context,
@@ -24,6 +29,7 @@ class ProfilePage extends ConsumerWidget {
             child: const Text('Annuler'),
           ),
           FilledButton(
+            key: ProfilePage.confirmLogoutButtonKey,
             onPressed: () => Navigator.of(dialogContext).pop(true),
             child: const Text('Se déconnecter'),
           ),
@@ -43,6 +49,7 @@ class ProfilePage extends ConsumerWidget {
         title: const Text('Profil'),
         actions: <Widget>[
           IconButton(
+            key: ProfilePage.logoutButtonKey,
             tooltip: 'Se déconnecter',
             icon: const Icon(Icons.logout),
             onPressed: () => _confirmLogout(context, ref),
