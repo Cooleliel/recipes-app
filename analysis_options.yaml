@@ -2,6 +2,15 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+    - lib/l10n/app_localizations*.dart
   language:
     # Interdit les génériques "bruts" (List au lieu de List<String>…).
     strict-raw-types: true
