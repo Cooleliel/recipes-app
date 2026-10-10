@@ -6,8 +6,8 @@ parcourt 50 recettes chargées depuis une **API REST** (liste paginée avec rech
 et consulte son profil. Les données sont **mises en cache avec Hive** : l'application reste utilisable
 **hors ligne**. Le code suit une **Clean Architecture organisée par feature** (domain / data / presentation),
 avec Riverpod pour l'état et l'injection de dépendances, Dio pour le réseau et fpdart pour une gestion
-fonctionnelle des erreurs. Le projet est **testé** (tests unitaires, de widgets et d'intégration), analysé
-en mode strict et vérifié à chaque push par une **CI GitHub Actions**.
+fonctionnelle des erreurs. Le projet est **testé** (tests unitaires, de widgets et d'intégration), **traduit en français et en anglais**,
+analysé en mode strict et vérifié à chaque push par une **CI GitHub Actions**.
 
 [![CI](https://github.com/Cooleliel/recipes-app/actions/workflows/ci.yml/badge.svg)](https://github.com/Cooleliel/recipes-app/actions/workflows/ci.yml)
 ![Flutter](https://img.shields.io/badge/Flutter-3.38-02569B?logo=flutter)
@@ -22,7 +22,8 @@ en mode strict et vérifié à chaque push par une **CI GitHub Actions**.
 **English summary —** Flutter recipes app backed by a real Supabase instance (REST via Dio, no SDK):
 JWT authentication with automatic refresh-token rotation, 8 screens, Hive offline cache (online-first),
 feature-first Clean Architecture, Riverpod 3, fpdart `Either` error handling, unit + widget tests with
-mocktail, strict static analysis and a GitHub Actions CI pipeline.
+mocktail, end-to-end integration tests, French/English localization (gen-l10n), strict static analysis
+and a GitHub Actions CI pipeline.
 
 ---
 
@@ -39,10 +40,11 @@ mocktail, strict static analysis and a GitHub Actions CI pipeline.
 9. [Tests](#9-tests)
 10. [Qualité, CI et versions](#10-qualité-ci-et-versions)
 11. [Performance et accessibilité](#11-performance-et-accessibilité)
-12. [Installation et lancement](#12-installation-et-lancement)
-13. [Stack technique](#13-stack-technique)
-14. [Sécurité](#14-sécurité)
-15. [Limites connues](#15-limites-connues)
+12. [Internationalisation FR / EN](#12-internationalisation-fr--en)
+13. [Installation et lancement](#13-installation-et-lancement)
+14. [Stack technique](#14-stack-technique)
+15. [Sécurité](#15-sécurité)
+16. [Limites connues](#16-limites-connues)
 
 ---
 
@@ -57,16 +59,16 @@ Chaque exigence renvoie au fichier qui la prouve.
 | Au moins 5 écrans | ✅ **8 écrans** | `lib/features/*/presentation/pages/` (splash, connexion, inscription, liste, détail, catégories, recettes d'une catégorie, profil) |
 | Au moins 10 tests unitaires | ✅ **13 tests** | `test/auth_repository_impl_test.dart`, `test/recipe_repository_impl_test.dart`, `test/search_recipes_use_case_test.dart` |
 | Au moins 5 tests de widgets | ✅ **7 tests** | `test/error_view_widget_test.dart`, `test/recipe_card_widget_test.dart`, `test/offline_banner_widget_test.dart` |
-| Au moins 2 tests d'intégration | ⏳ en cours | `integration_test/` |
+| Au moins 2 tests d'intégration | ✅ **3 tests** | `integration_test/app_test.dart` (connexion, consultation, déconnexion sur le backend réel) |
 | Images optimisées et lazy-loadées | ✅ | `RecipeImage` (`cacheWidth`), `ListView.builder`, scroll infini ([section 11](#11-performance-et-accessibilité)) |
 | Pas de rebuilds inutiles | ✅ | Constructeurs `const` imposés par le lint `prefer_const_constructors`, état Riverpod ciblé |
 | Accessibilité (semantic labels) | ✅ | `Semantics`, `tooltip`, `semanticLabel` ([section 11](#11-performance-et-accessibilité)), testé dans `test/recipe_card_widget_test.dart` |
-| Internationalisation FR + EN | ⏳ en cours | — |
+| Internationalisation FR + EN | ✅ | `l10n.yaml`, `lib/l10n/app_fr.arb`, `lib/l10n/app_en.arb` ([section 12](#12-internationalisation-fr--en)) |
 | CI GitHub Actions (lint + tests) | ✅ | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) |
 | `flutter analyze` sans avertissement | ✅ | [`analysis_options.yaml`](analysis_options.yaml) (mode strict), étape « Analyse statique » de la CI |
 | README professionnel + badges | ✅ | Ce fichier |
-| CHANGELOG avec au moins 3 versions | 🔄 1 version publiée | [`CHANGELOG.md`](CHANGELOG.md) |
-| APK de démonstration | ⏳ prévu | Onglet *Releases* du dépôt |
+| CHANGELOG avec au moins 3 versions | ✅ 1.0.0, 1.1.0, 1.2.0 | [`CHANGELOG.md`](CHANGELOG.md), tags Git `v1.0.0`, `v1.1.0`, `v1.2.0` |
+| APK de démonstration | ✅ | [`app-release.apk`](https://github.com/Cooleliel/recipes-app/releases/latest) dans la release GitHub `v1.2.0` |
 
 ### Certification 4 — « App connectée avec backend réel »
 
@@ -137,6 +139,7 @@ recipes-app/
 │   │       ├── presentation/      # Notifier et providers, 4 pages, widgets
 │   │       └── di/
 │   ├── router/                    # go_router : routes, redirections selon la session, onglets
+│   ├── l10n/                      # Traductions FR / EN (ARB) et classes générées
 │   ├── app.dart
 │   └── main.dart
 ├── test/                          # Tests unitaires et de widgets (à plat)
@@ -145,6 +148,7 @@ recipes-app/
 ├── bruno/                         # Collection Bruno de toutes les requêtes de l'app
 ├── docs/screenshots/              # Captures du README
 ├── .github/workflows/ci.yml       # CI : analyse + tests + couverture
+├── l10n.yaml                      # Configuration de gen-l10n
 └── CHANGELOG.md
 ```
 
@@ -303,6 +307,9 @@ DioException ──DioErrorMapper──> Exception (data) ──FailureMapper─
 ```bash
 flutter test               # tests unitaires et de widgets
 flutter test --coverage    # + rapport de couverture (coverage/lcov.info)
+
+# Tests d'intégration : émulateur allumé, compte de test dans config/env.json
+flutter test integration_test/app_test.dart --dart-define-from-file=config/env.json
 ```
 
 Tous les tests unitaires et de widgets sont **directement dans `test/`**. Les dépendances (datasources,
@@ -317,9 +324,13 @@ avec `ProviderScope(overrides: [...])`.
 | `test/error_view_widget_test.dart` | Widget | 2 | Message + bouton « Réessayer » ; bouton masqué sans action |
 | `test/recipe_card_widget_test.dart` | Widget | 3 | Nom, cuisine, note, durée, difficulté ; clic ; **libellés d'accessibilité** |
 | `test/offline_banner_widget_test.dart` | Widget | 2 | Bandeau visible hors ligne, invisible en ligne (réseau simulé via `ProviderScope`) |
-| **Total** | | **20** | 13 unitaires + 7 widgets |
+| `integration_test/app_test.dart` | Intégration | 3 | Sur le vrai backend : mot de passe incorrect (notification d'erreur) ; connexion → liste → détail → retour ; déconnexion depuis le profil |
+| **Total** | | **23** | 13 unitaires + 7 widgets + 3 intégration |
 
-Les tests d'intégration (`integration_test/`) sont en cours d'ajout.
+Les tests d'intégration lancent la vraie app (`app.main()`) sur un émulateur, avec
+`IntegrationTestWidgetsFlutterBinding`. Ils utilisent un « Page Object » (`AppRobot`) et retrouvent les
+widgets par des `Key` (`LoginPage.emailFieldKey`, `HomeShell.profileTabKey`…) : ils ne dépendent pas
+du texte affiché, donc de la langue. Ils ont besoin d'un appareil et ne tournent donc pas dans la CI.
 
 ---
 
@@ -359,7 +370,31 @@ Les tests d'intégration (`integration_test/`) sont en cours d'ajout.
 
 ---
 
-## 12. Installation et lancement
+## 12. Internationalisation FR / EN
+
+Traduction avec l'outil officiel **gen-l10n** (`flutter_localizations` + `intl`) :
+
+- `l10n.yaml` : configuration (dossier `lib/l10n`, modèle `app_fr.arb`).
+- `lib/l10n/app_fr.arb` (français, modèle commenté) et `lib/l10n/app_en.arb` (anglais).
+- `lib/l10n/app_localizations*.dart` : classes générées par `flutter gen-l10n`.
+- `lib/app.dart` : `localizationsDelegates` et `supportedLocales` de `AppLocalizations`.
+
+La langue suit celle du téléphone : français ou anglais, le français sinon. Dans le code :
+
+```dart
+final AppLocalizations l10n = AppLocalizations.of(context)!;
+Text(l10n.loginButton); // « Se connecter » ou « Sign in »
+```
+
+---
+
+## 13. Installation et lancement
+
+### Essayer directement (Android)
+
+Télécharge `app-release.apk` dans la [dernière release](https://github.com/Cooleliel/recipes-app/releases/latest)
+et installe-le sur un téléphone Android (autoriser l'installation d'applications inconnues).
+Il est connecté au backend Supabase du projet : crée un compte depuis l'écran d'inscription.
 
 ### Prérequis
 
@@ -414,7 +449,7 @@ Sans configuration, l'app affiche un écran qui explique la commande à utiliser
 
 ---
 
-## 13. Stack technique
+## 14. Stack technique
 
 | Besoin | Package | Pourquoi |
 |---|---|---|
@@ -426,14 +461,15 @@ Sans configuration, l'app affiche un écran qui explique la commande à utiliser
 | Stockage sécurisé | `flutter_secure_storage` | Tokens chiffrés (Keystore / Keychain) |
 | Connectivité | `connectivity_plus` | Détection hors ligne en temps réel |
 | Police | `google_fonts` | Poppins |
-| Tests | `flutter_test`, `mocktail` | Mocks sans génération de code |
+| Traduction | `flutter_localizations`, `intl` (gen-l10n) | Outil officiel de Flutter, classes typées générées depuis les ARB |
+| Tests | `flutter_test`, `mocktail`, `integration_test` | Mocks sans génération de code ; tests de bout en bout sur appareil |
 
 Backend : **Supabase** (PostgreSQL + PostgREST + Auth), appelé **en REST pur avec Dio**, sans le SDK
 `supabase_flutter`, pour maîtriser les en-têtes, l'intercepteur et le refresh du token.
 
 ---
 
-## 14. Sécurité
+## 15. Sécurité
 
 - Seule la clé **publishable** est utilisée ; elle est injectée au lancement (`--dart-define-from-file`)
   et n'est pas versionnée (`config/env.json` est ignoré par Git).
@@ -441,7 +477,7 @@ Backend : **Supabase** (PostgreSQL + PostgREST + Auth), appelé **en REST pur av
 - Tokens stockés **chiffrés** ; le cache Hive ne contient que des recettes et le profil.
 - À la déconnexion, la session est révoquée côté serveur **et** effacée localement, même hors ligne.
 
-## 15. Limites connues
+## 16. Limites connues
 
 - Les images sont mises en cache en mémoire uniquement : après un redémarrage hors ligne,
   les photos sont remplacées par une icône (les textes restent disponibles).
