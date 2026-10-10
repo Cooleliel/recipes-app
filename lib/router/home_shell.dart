@@ -9,6 +9,12 @@ import 'package:recipes_app/core/widgets/offline_banner.dart';
 class HomeShell extends StatelessWidget {
   const HomeShell({super.key, required this.navigationShell});
 
+  
+  /// Clés des onglets, utilisées par les tests d'intégration.
+  static const Key recipesTabKey = Key('tab_recipes');
+  static const Key categoriesTabKey = Key('tab_categories');
+  static const Key profileTabKey = Key('tab_profile');
+
   final StatefulNavigationShell navigationShell;
 
   void _onDestinationSelected(int index) {
@@ -32,16 +38,19 @@ class HomeShell extends StatelessWidget {
             onDestinationSelected: _onDestinationSelected,
             destinations: const <NavigationDestination>[
               NavigationDestination(
+                key: HomeShell.recipesTabKey,
                 icon: Icon(Icons.restaurant_menu_outlined),
                 selectedIcon: Icon(Icons.restaurant_menu),
                 label: 'Recettes',
               ),
               NavigationDestination(
+                key: HomeShell.categoriesTabKey,
                 icon: Icon(Icons.category_outlined),
                 selectedIcon: Icon(Icons.category),
                 label: 'Catégories',
               ),
               NavigationDestination(
+                key: HomeShell.profileTabKey,
                 icon: Icon(Icons.person_outline),
                 selectedIcon: Icon(Icons.person),
                 label: 'Profil',
