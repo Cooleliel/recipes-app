@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+  "appTitle": "Recipes App",
+  "tabRecipes": "Recipes",
+  "tabCategories": "Categories",
+  "tabProfile": "Profile",
+  "loginSubtitle": "Sign in to access the recipes",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "loginButton": "Sign in",
+  "goToRegister": "No account yet? Create one",
+  "recipesTitle": "Recipes",
+  "searchHint": "Search for a recipe…",
+  "allRecipesShown": "All recipes are displayed.",
+  "cachedDataNotice": "Saved data: pull down to refresh.",
+  "retry": "Retry"
+}
