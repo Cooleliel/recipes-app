@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipes_app/core/widgets/offline_banner.dart';
 
+import '../l10n/app_localizations.dart';
+
 /// Coque des 3 onglets : barre de navigation + bandeau « Hors ligne ».
 ///
 /// `StatefulShellRoute` garde l'état de chaque onglet (position de scroll,
@@ -27,6 +29,7 @@ class HomeShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: Column(
@@ -36,24 +39,24 @@ class HomeShell extends StatelessWidget {
           NavigationBar(
             selectedIndex: navigationShell.currentIndex,
             onDestinationSelected: _onDestinationSelected,
-            destinations: const <NavigationDestination>[
+            destinations: <NavigationDestination>[
               NavigationDestination(
                 key: HomeShell.recipesTabKey,
-                icon: Icon(Icons.restaurant_menu_outlined),
-                selectedIcon: Icon(Icons.restaurant_menu),
-                label: 'Recettes',
+                icon: const Icon(Icons.restaurant_menu_outlined),
+                selectedIcon: const Icon(Icons.restaurant_menu),
+                label: l10n.tabRecipes,
               ),
               NavigationDestination(
                 key: HomeShell.categoriesTabKey,
-                icon: Icon(Icons.category_outlined),
-                selectedIcon: Icon(Icons.category),
-                label: 'Catégories',
+                icon: const Icon(Icons.category_outlined),
+                selectedIcon: const Icon(Icons.category),
+                label: l10n.tabCategories,
               ),
               NavigationDestination(
                 key: HomeShell.profileTabKey,
-                icon: Icon(Icons.person_outline),
-                selectedIcon: Icon(Icons.person),
-                label: 'Profil',
+                icon: const Icon(Icons.person_outline),
+                selectedIcon: const Icon(Icons.person),
+                label: l10n.tabProfile,
               ),
             ],
           ),
