@@ -12,6 +12,13 @@ import 'package:recipes_app/router/app_routes.dart';
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
+  
+  /// Clés utilisées par les tests pour retrouver les widgets sans dépendre
+  /// du texte affiché.
+  static const Key emailFieldKey = Key('login_email_field');
+  static const Key passwordFieldKey = Key('login_password_field');
+  static const Key submitButtonKey = Key('login_submit_button');
+
   @override
   ConsumerState<LoginPage> createState() => _LoginPageState();
 }
@@ -94,6 +101,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ],
                       const SizedBox(height: 32),
                       TextFormField(
+                        key: LoginPage.emailFieldKey,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
@@ -107,12 +115,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                       const SizedBox(height: 16),
                       PasswordField(
+                        key: LoginPage.passwordFieldKey,
                         controller: _passwordController,
                         validator: CredentialsValidator.password,
                         onFieldSubmitted: (String value) => _submit(),
                       ),
                       const SizedBox(height: 24),
                       FilledButton(
+                        key: LoginPage.submitButtonKey,
                         onPressed: _isSubmitting ? null : _submit,
                         child: _isSubmitting
                             ? const SizedBox.square(
